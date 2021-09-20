@@ -36,7 +36,11 @@ jobs:
         find: "/lukencode/"
         replace:  "/jafin/"
         include: "Directory.Build.props"
-
+    - name: Cat BuildProps
+      id: vars
+      run: echo ::set-output name=buildprops::$(cat src/Directory.Build.props)
+    - name: Output propsFile
+      run: echo ${{ steps.vars.outputs.buidprops}}
     - name: Install dependencies
       run: dotnet restore
     - name: Build
@@ -49,7 +53,7 @@ jobs:
           dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github
 
     - name: NuGet push on GitHub
-      run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate
+      run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate --no-symbols true
 
     - name: Upload NuGet package
       uses: actions/upload-artifact@v2.2.1

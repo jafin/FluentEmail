@@ -36,11 +36,16 @@ jobs:
         find: "/lukencode/"
         replace:  "/jafin/"
         include: "Directory.Build.props"
-    - name: Cat BuildProps
-      id: vars
-      run: echo ::set-output name=buildprops::$(cat src/Directory.Build.props)
-    - name: Output propsFile
-      run: echo ${{ steps.vars.outputs.buidprops}}
+    
+    - uses: actions/checkout@v2
+    - name: Cat for GitHub Actions
+      uses: pCYSl5EDgo/cat@1.0.0
+      id: buildprops
+      with:
+        path: src/Directory.Build.props
+    - run: echo $TEXT
+      env: 
+        TEXT: ${{ steps.buildprops.outputs.text}}
     - name: Install dependencies
       run: dotnet restore
     - name: Build

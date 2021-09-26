@@ -41,7 +41,7 @@ jobs:
     - name: Find and Replace
       uses: jafin/gha-search-replace@0.1.0-alpha
       with:
-        include: "Directory.Build.props"
+        include: "**/Directory.Build.props"
         search: "lukencode"
         replace:  "jafin"
 

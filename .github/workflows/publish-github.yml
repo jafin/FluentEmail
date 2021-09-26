@@ -29,14 +29,22 @@ jobs:
     # - name: Add private GitHub registry to NuGet
     #   run: dotnet nuget add source --username USERNAME --password ${{ env.NUGET_AUTH_TOKEN }} --store-password-in-clear-text --name github ${{ env.NUGET_PATH }}
     # patch to allow local publishing of nuget files, don't push this upstream.
+    # - uses: actions/checkout@v2
+    # - name: Find and Replace
+    #   uses: jacobtomlinson/gha-find-replace@0.1.4
+    #   with:
+    #     find: "lukencode"
+    #     replace:  "jafin"
+    #     include: "Directory.Build.props"
+
     - uses: actions/checkout@v2
     - name: Find and Replace
-      uses: jacobtomlinson/gha-find-replace@0.1.4
+      uses: jafin/gha-find-replace@0.1.0
       with:
+        include: "Directory.Build.props"
         find: "lukencode"
         replace:  "jafin"
-        include: "Directory.Build.props"
-    
+
     - uses: actions/checkout@v2
     - name: Cat for GitHub Actions
       uses: pCYSl5EDgo/cat@1.0.0

@@ -39,7 +39,7 @@ jobs:
 
     - uses: actions/checkout@v2
     - name: Find and Replace
-      uses: jafin/gha-search-replace@0.1.1-alpha
+      uses: jafin/gha-search-replace@0.1.2-alpha
       with:
         include: "**/Directory.Build.props"
         search: "lukencode"
@@ -51,7 +51,8 @@ jobs:
       id: buildprops
       with:
         path: src/Directory.Build.props
-    - run: echo $TEXT
+    - name: output changed file
+      run: echo $TEXT
       env: 
         TEXT: ${{ steps.buildprops.outputs.text}}
     - name: Install dependencies

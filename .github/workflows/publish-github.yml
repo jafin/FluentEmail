@@ -42,7 +42,7 @@ jobs:
       uses: jafin/gha-search-replace@0.1.2-alpha
       with:
         include: "**/Directory.Build.props"
-        search: "lukencode"
+        search: '{"re":"__REGEXP /lukencode/gi"}'
         replace: "jafin"
 
     - uses: actions/checkout@v2

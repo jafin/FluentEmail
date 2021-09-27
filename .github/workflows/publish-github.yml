@@ -9,14 +9,14 @@ jobs:
     runs-on: ubuntu-latest
     env:
       APP_NAME: FluentEmail                                        # set this to your application's name
-      #NUGET_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
       GITHUB_REPOSITORY_OWNER: ${{ github.repository_owner }}   # set this to access token to github.com
-      #GITHUB_API_KEY: ${{ github.token }}                      # set this to access token to github.com
       GITHUB_API_KEY: ${{ secrets.GH_NUGET }}                   # set this to access token to github.com
       NUGET_API_KEY: ${{ secrets.NUGET_API_KEY }}               # set this to access token to nuget.org
  
     steps:
     - uses: actions/checkout@v2
+      with:
+        fetch-depth: 0
     - name: Setup .NET Core 3.1.x
       uses: actions/setup-dotnet@v1
       with:
@@ -26,16 +26,12 @@ jobs:
       with:
         dotnet-version: '5.0.x'
 
-    # - name: Add private GitHub registry to NuGet
-    #   run: dotnet nuget add source --username USERNAME --password ${{ env.NUGET_AUTH_TOKEN }} --store-password-in-clear-text --name github ${{ env.NUGET_PATH }}
-    # patch to allow local publishing of nuget files, don't push this upstream.
-    # - uses: actions/checkout@v2
-    # - name: Find and Replace
-    #   uses: jacobtomlinson/gha-find-replace@0.1.4
-    #   with:
-    #     find: "lukencode"
-    #     replace:  "jafin"
-    #     include: "Directory.Build.props"
+    - name: set APP_VERSION based on repo w/MinVer
+      run: |
+        dotnet tool install -g minver-cli -v -q
+        APP_VERSION=`minver -t v -d preview`
+        echo "Adding version to GITHUB_ENV: APP_VERSION=$APP_VERSION"
+        echo "APP_VERSION=$APP_VERSION >> $GITHUB_ENV"
 
     - name: Find and Replace
       uses: jafin/gha-search-replace@0.1.2-alpha
@@ -72,8 +68,6 @@ jobs:
         
     - name: NuGet push on GitHub
       run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate --no-symbols true
-
-
 
     # - name: Publish FluentEmail.Core
     #   uses: brandedoutcast/publish-nuget@v2.5.2

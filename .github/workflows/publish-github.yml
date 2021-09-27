@@ -64,14 +64,16 @@ jobs:
       run: |
           dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github
 
-    - name: NuGet push on GitHub
-      run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate --no-symbols true
-
     - name: Upload NuGet package
       uses: actions/upload-artifact@v2.2.1
       with:
         name: ${{ env.APP_NAME }}
         path: "**/*.nupkg"
+        
+    - name: NuGet push on GitHub
+      run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate --no-symbols true
+
+
 
     # - name: Publish FluentEmail.Core
     #   uses: brandedoutcast/publish-nuget@v2.5.2

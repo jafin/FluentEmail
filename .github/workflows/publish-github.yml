@@ -37,7 +37,6 @@ jobs:
     #     replace:  "jafin"
     #     include: "Directory.Build.props"
 
-    - uses: actions/checkout@v2
     - name: Find and Replace
       uses: jafin/gha-search-replace@0.1.2-alpha
       with:
@@ -45,7 +44,6 @@ jobs:
         search: '{"re":"__REGEXP /lukencode/gi"}'
         replace: "jafin"
 
-    - uses: actions/checkout@v2
     - name: Cat for GitHub Actions
       uses: pCYSl5EDgo/cat@1.0.0
       id: buildprops

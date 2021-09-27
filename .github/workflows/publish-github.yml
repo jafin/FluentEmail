@@ -28,7 +28,7 @@ jobs:
 
     - name: set APP_VERSION based on repo w/MinVer
       run: |
-        dotnet tool install -g minver-cli -v -q
+        dotnet tool install -g minver-cli
         APP_VERSION=`minver -t v -d preview`
         echo "Adding version to GITHUB_ENV: APP_VERSION=$APP_VERSION"
         echo "APP_VERSION=$APP_VERSION >> $GITHUB_ENV"

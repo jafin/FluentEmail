@@ -1,6 +1,7 @@
 name: Publish Packages
 
 on:
+  workflow_dispatch:   #all run manually
   push:
     branches: [ dev ]
 
@@ -53,7 +54,7 @@ jobs:
 
     - name: Add Nuget sources
       run: |
-          dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github
+          dotnet nuget add source https://nuget.pkg.github.com/${{ github.repository_owner }}/index.json --name github
 
     - name: Upload NuGet package artifacts
       uses: actions/upload-artifact@v3

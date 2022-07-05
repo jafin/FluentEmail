@@ -49,20 +49,20 @@ jobs:
     - name: Build
       run: dotnet build --configuration Release --no-restore
     - name: Pack
-      run: dotnet pack --configuration Release
+      run: dotnet pack --configuration Release -o ${GITHUB_WORKSPACE}/packages
 
     - name: Add Nuget sources
       run: |
           dotnet nuget add source https://nuget.pkg.github.com/${{ env.GITHUB_REPOSITORY_OWNER }}/index.json --name github
 
-    - name: Upload NuGet package
-      uses: actions/upload-artifact@v2.2.1
+    - name: Upload NuGet package artifacts
+      uses: actions/upload-artifact@v3
       with:
         name: ${{ env.APP_NAME }}
-        path: "**/*.nupkg"
+        path: "${GITHUB_WORKSPACE}/packages/*.nupkg"
         
-    - name: NuGet push on GitHub
-      run: dotnet nuget push "**/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate --no-symbols true
+    - name: Publish to Github packages
+      run: dotnet nuget push "${GITHUB_WORKSPACE}/packages/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate
 
     # - name: Publish FluentEmail.Core
     #   uses: brandedoutcast/publish-nuget@v2.5.2

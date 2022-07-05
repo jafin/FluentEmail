@@ -59,10 +59,10 @@ jobs:
       uses: actions/upload-artifact@v3
       with:
         name: ${{ env.APP_NAME }}
-        path: "${GITHUB_WORKSPACE}/packages/*.nupkg"
+        path: "${{ GITHUB_WORKSPACE }}/packages/*.nupkg"
         
     - name: Publish to Github packages
-      run: dotnet nuget push "${GITHUB_WORKSPACE}/packages/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate
+      run: dotnet nuget push "${{ GITHUB_WORKSPACE }}/packages/*.nupkg" --source github --api-key ${{ env.GITHUB_API_KEY }} --skip-duplicate
 
     # - name: Publish FluentEmail.Core
     #   uses: brandedoutcast/publish-nuget@v2.5.2

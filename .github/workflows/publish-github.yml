@@ -37,7 +37,7 @@ jobs:
         replace: "jafin"
 
     - name: Cat for GitHub Actions
-      uses: pCYSl5EDgo/cat@1.0.0
+      uses: pCYSl5EDgo/cat@1.0.1
       id: buildprops
       with:
         path: src/Directory.Build.props

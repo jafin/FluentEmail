@@ -5,7 +5,6 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using FluentEmail.Core;
-using FluentEmail.Core.Interfaces;
 using FluentEmail.Core.Models;
 using SendGrid;
 using SendGrid.Helpers.Mail;
@@ -46,9 +45,7 @@ namespace FluentEmail.SendGrid
                 mailMessage.PlainTextContent = email.Data.PlaintextAlternativeBody;
             }
 
-            var sendResponse = await SendViaSendGrid(mailMessage, token);
-
-            return sendResponse;
+            return await SendViaSendGrid(mailMessage, token);
         }
 
         public async Task<SendResponse> SendWithTemplateAsync(IFluentEmail email, string templateId, object templateData, CancellationToken? token = null)
@@ -175,27 +172,29 @@ namespace FluentEmail.SendGrid
             return sendResponse;
         }
 
-        private EmailAddress ConvertAddress(Address address) => new EmailAddress(address.EmailAddress, address.Name);
+        private EmailAddress ConvertAddress(Address address) => new(address.EmailAddress, address.Name);
 
-        private async Task<SendGridAttachment> ConvertAttachment(Core.Models.Attachment attachment) => new SendGridAttachment
+        private async Task<SendGridAttachment> ConvertAttachment(Core.Models.Attachment attachment) => new()
         {
             Content = await GetAttachmentBase64String(attachment.Data),
             Filename = attachment.Filename,
-            Type = attachment.ContentType
+            Type = attachment.ContentType,
+            Disposition = attachment.IsInline
+                ? "inline"
+                : "attachment",
+            ContentId = attachment.ContentId
         };
 
         private async Task<string> GetAttachmentBase64String(Stream stream)
         {
-            using (var ms = new MemoryStream())
-            {
-                await stream.CopyToAsync(ms);
-                return Convert.ToBase64String(ms.ToArray());
-            }
+            using var ms = new MemoryStream();
+            await stream.CopyToAsync(ms);
+            return Convert.ToBase64String(ms.ToArray());
         }
 
         private bool IsHttpSuccess(int statusCode)
         {
-            return statusCode >= 200 && statusCode < 300;
+            return statusCode is >= 200 and < 300;
         }
     }
 }

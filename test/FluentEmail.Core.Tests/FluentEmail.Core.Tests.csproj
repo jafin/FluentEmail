@@ -1,41 +1,41 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
-  <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <IsTestProject>true</IsTestProject>
-  </PropertyGroup>
+	<PropertyGroup>
+		<TargetFramework>net6.0</TargetFramework>
+	</PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\FluentEmail.Core\FluentEmail.Core.csproj" />
-    <ProjectReference Include="..\..\src\Senders\FluentEmail.Smtp\FluentEmail.Smtp.csproj" />
-    <ProjectReference Include="..\..\src\Senders\FluentEmail.MailKit\FluentEmail.MailKit.csproj" />
-    <ProjectReference Include="..\..\src\Senders\FluentEmail.Graph\FluentEmail.Graph.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<ProjectReference Include="..\..\src\FluentEmail.Core\FluentEmail.Core.csproj" />
+		<ProjectReference Include="..\..\src\Senders\FluentEmail.Smtp\FluentEmail.Smtp.csproj" />
+		<ProjectReference Include="..\..\src\Senders\FluentEmail.Graph\FluentEmail.Graph.csproj" />
+		<ProjectReference Include="..\..\src\Senders\FluentEmail.MailKit\FluentEmail.MailKit.csproj" />
+		<ProjectReference Include="..\..\src\Senders\FluentEmail.Mailtrap\FluentEmail.Mailtrap.csproj" />
+		<ProjectReference Include="..\..\src\Senders\FluentEmail.Mailgun\FluentEmail.Mailgun.csproj" />
+		<ProjectReference Include="..\..\src\Senders\FluentEmail.SendGrid\FluentEmail.SendGrid.csproj" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.2.0" />
-    <PackageReference Include="NUnit" Version="3.13.3" />
-    <PackageReference Include="NUnit3TestAdapter" Version="4.2.1" />
-    <ProjectReference Include="..\..\src\Senders\FluentEmail.Mailtrap\FluentEmail.Mailtrap.csproj" />
-    <ProjectReference Include="..\..\src\Senders\FluentEmail.SendGrid\FluentEmail.SendGrid.csproj" />
-    <ProjectReference Include="..\..\src\Senders\FluentEmail.Mailgun\FluentEmail.Mailgun.csproj" />
-  </ItemGroup>
+	<ItemGroup>
+		<Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <Service Include="{82a7f48d-3b50-4b1e-b82e-3ada8210c358}" />
-  </ItemGroup>
+	<ItemGroup>
+		<PackageReference Update="Microsoft.NET.Test.Sdk" Version="17.4.1" />
+		<PackageReference Update="NUnit" Version="3.13.3" />
+		<PackageReference Update="NUnit3TestAdapter" Version="4.3.1" />
+	</ItemGroup>
 
-  <ItemGroup>
-    <None Update="*.txt">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <EmbeddedResource Include="test-embedded.txt" />
-    <None Update="logotest.png">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Update="test-binary.xlsx">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-  </ItemGroup>
+	
+	<ItemGroup>
+		<None Update="*.txt">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<EmbeddedResource Include="test-embedded.txt" />
+		<None Update="logotest.png">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+		<None Update="test-binary.xlsx">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</None>
+	</ItemGroup>
 
 </Project>

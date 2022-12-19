@@ -52,34 +52,34 @@ namespace FluentEmail.MailKitSmtp
                     return response;
                 }
 
-                using (var client = new SmtpClient())
+                using var client = new SmtpClient();
+                client.CheckCertificateRevocation = _smtpClientOptions.CheckCertificateRevocation;
+                    
+                if (_smtpClientOptions.SocketOptions.HasValue)
                 {
-                    if (_smtpClientOptions.SocketOptions.HasValue)
-                    {
-                        client.Connect(
-                            _smtpClientOptions.Server,
-                            _smtpClientOptions.Port,
-                            _smtpClientOptions.SocketOptions.Value,
-                            token.GetValueOrDefault());
-                    }
-                    else
-                    {
-                        client.Connect(
-                            _smtpClientOptions.Server,
-                            _smtpClientOptions.Port,
-                            _smtpClientOptions.UseSsl,
-                            token.GetValueOrDefault());
-                    }
-
-                    // Note: only needed if the SMTP server requires authentication
-                    if (_smtpClientOptions.RequiresAuthentication)
-                    {
-                        client.Authenticate(_smtpClientOptions.User, _smtpClientOptions.Password, token.GetValueOrDefault());
-                    }
-
-                    client.Send(message, token.GetValueOrDefault());
-                    client.Disconnect(true, token.GetValueOrDefault());
+                    client.Connect(
+                        _smtpClientOptions.Server,
+                        _smtpClientOptions.Port,
+                        _smtpClientOptions.SocketOptions.Value,
+                        token.GetValueOrDefault());
                 }
+                else
+                {
+                    client.Connect(
+                        _smtpClientOptions.Server,
+                        _smtpClientOptions.Port,
+                        _smtpClientOptions.UseSsl,
+                        token.GetValueOrDefault());
+                }
+
+                // Note: only needed if the SMTP server requires authentication
+                if (_smtpClientOptions.RequiresAuthentication)
+                {
+                    client.Authenticate(_smtpClientOptions.User, _smtpClientOptions.Password, token.GetValueOrDefault());
+                }
+
+                client.Send(message, token.GetValueOrDefault());
+                client.Disconnect(true, token.GetValueOrDefault());
             }
             catch (Exception ex)
             {
@@ -114,34 +114,32 @@ namespace FluentEmail.MailKitSmtp
                     return response;
                 }
 
-                using (var client = new SmtpClient())
+                using var client = new SmtpClient();
+                if (_smtpClientOptions.SocketOptions.HasValue)
                 {
-                    if (_smtpClientOptions.SocketOptions.HasValue)
-                    {
-                        await client.ConnectAsync(
-                            _smtpClientOptions.Server,
-                            _smtpClientOptions.Port,
-                            _smtpClientOptions.SocketOptions.Value,
-                            token.GetValueOrDefault());
-                    }
-                    else
-                    {
-                        await client.ConnectAsync(
-                            _smtpClientOptions.Server,
-                            _smtpClientOptions.Port,
-                            _smtpClientOptions.UseSsl,
-                            token.GetValueOrDefault());
-                    }
-
-                    // Note: only needed if the SMTP server requires authentication
-                    if (_smtpClientOptions.RequiresAuthentication)
-                    {
-                        await client.AuthenticateAsync(_smtpClientOptions.User, _smtpClientOptions.Password, token.GetValueOrDefault());
-                    }
-
-                    await client.SendAsync(message, token.GetValueOrDefault());
-                    await client.DisconnectAsync(true, token.GetValueOrDefault());
+                    await client.ConnectAsync(
+                        _smtpClientOptions.Server,
+                        _smtpClientOptions.Port,
+                        _smtpClientOptions.SocketOptions.Value,
+                        token.GetValueOrDefault());
                 }
+                else
+                {
+                    await client.ConnectAsync(
+                        _smtpClientOptions.Server,
+                        _smtpClientOptions.Port,
+                        _smtpClientOptions.UseSsl,
+                        token.GetValueOrDefault());
+                }
+
+                // Note: only needed if the SMTP server requires authentication
+                if (_smtpClientOptions.RequiresAuthentication)
+                {
+                    await client.AuthenticateAsync(_smtpClientOptions.User, _smtpClientOptions.Password, token.GetValueOrDefault());
+                }
+
+                await client.SendAsync(message, token.GetValueOrDefault());
+                await client.DisconnectAsync(true, token.GetValueOrDefault());
             }
             catch (Exception ex)
             {
@@ -164,20 +162,8 @@ namespace FluentEmail.MailKitSmtp
             if (File.Exists(path))
                 return;
 
-            try
-            {
-                using (var stream = new FileStream(path, FileMode.CreateNew))
-                {
-                    await message.WriteToAsync(stream);
-                    return;
-                }
-            }
-            catch (IOException)
-            {
-                // The file may have been created between our File.Exists() check and
-                // our attempt to create the stream.
-                throw;
-            }
+            using var stream = new FileStream(path, FileMode.CreateNew);
+            await message.WriteToAsync(stream);
         }
 
         /// <summary>

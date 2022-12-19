@@ -24,7 +24,9 @@ namespace FluentEmail.Core
         /// <summary>
         /// Creates a new email instance with default settings.
         /// </summary>
-        public Email() : this(DefaultRenderer, DefaultSender) { }
+        public Email() : this(DefaultRenderer, DefaultSender)
+        {
+        }
 
         /// <summary>
         /// Creates a new email instance with overrides for the rendering and sending engines.
@@ -42,7 +44,9 @@ namespace FluentEmail.Core
         /// <param name="emailAddress">Email address to send from</param>
         /// <param name="name">Name to send from</param>
         public Email(string emailAddress, string name = "")
-            : this(DefaultRenderer, DefaultSender, emailAddress, name) { }
+            : this(DefaultRenderer, DefaultSender, emailAddress, name)
+        {
+        }
 
         /// <summary>
         ///  Creates a new Email instance using the given engines and mailing address.
@@ -55,7 +59,7 @@ namespace FluentEmail.Core
         {
             Data = new EmailData
             {
-                FromAddress = new Address {EmailAddress = emailAddress, Name = name}
+                FromAddress = new Address { EmailAddress = emailAddress, Name = name }
             };
             Renderer = renderer;
             Sender = sender;
@@ -71,7 +75,7 @@ namespace FluentEmail.Core
         {
             var email = new Email
             {
-                Data = {FromAddress = new Address(emailAddress, name ?? "")}
+                Data = { FromAddress = new Address(emailAddress, name ?? "") }
             };
 
             return email;
@@ -109,6 +113,7 @@ namespace FluentEmail.Core
                     {
                         currentName = nameSplit[i];
                     }
+
                     Data.ToAddresses.Add(new Address(addressSplit[i].Trim(), currentName.Trim()));
                 }
             }
@@ -116,6 +121,7 @@ namespace FluentEmail.Core
             {
                 Data.ToAddresses.Add(new Address(emailAddress.Trim(), name?.Trim()));
             }
+
             return this;
         }
 
@@ -152,6 +158,7 @@ namespace FluentEmail.Core
             {
                 Data.ToAddresses.Add(address);
             }
+
             return this;
         }
 
@@ -178,6 +185,7 @@ namespace FluentEmail.Core
             {
                 Data.CcAddresses.Add(address);
             }
+
             return this;
         }
 
@@ -204,6 +212,7 @@ namespace FluentEmail.Core
             {
                 Data.BccAddresses.Add(address);
             }
+
             return this;
         }
 
@@ -457,10 +466,11 @@ namespace FluentEmail.Core
             {
                 Data.Attachments.Add(attachment);
             }
+
             return this;
         }
 
-        public IFluentEmail AttachFromFilename(string filename,  string contentType = null, string attachmentName = null)
+        public IFluentEmail AttachFromFilename(string filename, string contentType = null, string attachmentName = null)
         {
             var stream = File.OpenRead(filename);
             Attach(new Attachment
@@ -516,6 +526,22 @@ namespace FluentEmail.Core
                 return cultureFile;
             else
                 return fileName;
+        }
+
+
+        /// <summary>
+        /// Adds all recipients in list to email
+        /// </summary>
+        /// <param name="mailAddresses">List of recipients</param>
+        /// <returns>Instance of the Email class</returns>
+        public IFluentEmail To(IEnumerable<string> mailAddresses)
+        {
+            foreach (var address in mailAddresses)
+            {
+                Data.ToAddresses.Add(new Address(address));
+            }
+
+            return this;
         }
     }
 }

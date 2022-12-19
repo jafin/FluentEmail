@@ -110,7 +110,7 @@ namespace FluentEmail.MailKitSmtp
             {
                 if (_smtpClientOptions.UsePickupDirectory)
                 {
-                    await this.SaveToPickupDirectory(message, _smtpClientOptions.MailPickupDirectory);
+                    await SaveToPickupDirectory(message, _smtpClientOptions.MailPickupDirectory);
                     return response;
                 }
 

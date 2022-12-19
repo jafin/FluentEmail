@@ -2,16 +2,16 @@
 using System.Net.Mail;
 using System.Threading;
 using System.Threading.Tasks;
-using FluentEmail.Core;
+using FluentEmail.Smtp;
 using NUnit.Framework;
 using Attachment = FluentEmail.Core.Models.Attachment;
 
-namespace FluentEmail.Smtp.Tests
+namespace FluentEmail.Core.Tests
 {
     [NonParallelizable]
     public class SmtpSenderTests
     {
-        // Warning: To pass, an smtp listener must be running on localhost:25.
+        // Warning: To pass, an SMTP listener must be running on localhost:25.
 
         const string toEmail = "bob@test.com";
         const string fromEmail = "johno@test.com";

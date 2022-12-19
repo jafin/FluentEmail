@@ -1,5 +1,5 @@
 using System;
-
+using FluentEmail.Core;
 using FluentEmail.Core.Interfaces;
 using FluentEmail.Liquid;
 

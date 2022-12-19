@@ -7,79 +7,81 @@ namespace FluentEmail.Core.Tests
 {
     [TestFixture]
     public class FluentEmailTests
-	{
-		const string toEmail = "bob@test.com";
-		const string fromEmail = "johno@test.com";
-		const string subject = "sup dawg";
-		const string body = "what be the hipitity hap?";
-
-		[Test]
-		public void To_Address_Is_Set()
-		{
-			var email = Email
-				.From(fromEmail)
-				.To(toEmail);
-
-			Assert.AreEqual(toEmail, email.Data.ToAddresses[0].EmailAddress);
-		}
-
-		[Test]
-		public void From_Address_Is_Set()
-		{
-			var email = Email.From(fromEmail);
-
-			Assert.AreEqual(fromEmail, email.Data.FromAddress.EmailAddress);
-		}
-
-		[Test]
-		public void Subject_Is_Set()
-		{
-			var email = Email
-				.From(fromEmail)
-				.Subject(subject);
-
-			Assert.AreEqual(subject, email.Data.Subject);
-		}
-
-		[Test]
-		public void Body_Is_Set()
-		{
-			var email = Email.From(fromEmail)
-				.Body(body);
-
-			Assert.AreEqual(body, email.Data.Body);
-		}
-
-		[Test]
-		public void Can_Add_Multiple_Recipients()
-		{
-			string toEmail1 = "bob@test.com";
-			string toEmail2 = "ratface@test.com";
-
-			var email = Email
-				.From(fromEmail)
-				.To(toEmail1)
-				.To(toEmail2);
-
-			Assert.AreEqual(2, email.Data.ToAddresses.Count);
-		}
-
-		[Test]
-		public void Can_Add_Multiple_Recipients_From_List()
-		{
-			var emails = new List<Address>();
-			emails.Add(new Address("email1@email.com"));
-			emails.Add(new Address("email2@email.com"));
-
-			var email = Email
-				.From(fromEmail)
-				.To(emails);
-
-			Assert.AreEqual(2, email.Data.ToAddresses.Count);
-		}
+    {
+        const string ToEmail = "bob@test.com";
+        const string FromEmail = "johno@test.com";
+        const string Subject = "sup dawg";
+        const string Body = "what be the hipitity hap?";
 
         [Test]
-        public void Can_Add_Mutlitple_Recipients_From_String_List()
+        public void To_Address_Is_Set()
+        {
+            var email = Email
+                .From(FromEmail)
+                .To(ToEmail);
+
+            Assert.AreEqual(ToEmail, email.Data.ToAddresses[0].EmailAddress);
+        }
+
+        [Test]
+        public void From_Address_Is_Set()
+        {
+            var email = Email.From(FromEmail);
+
+            Assert.AreEqual(FromEmail, email.Data.FromAddress.EmailAddress);
+        }
+
+        [Test]
+        public void Subject_Is_Set()
+        {
+            var email = Email
+                .From(FromEmail)
+                .Subject(Subject);
+
+            Assert.AreEqual(Subject, email.Data.Subject);
+        }
+
+        [Test]
+        public void Body_Is_Set()
+        {
+            var email = Email.From(FromEmail)
+                .Body(Body);
+
+            Assert.AreEqual(Body, email.Data.Body);
+        }
+
+        [Test]
+        public void Can_Add_Multiple_Recipients()
+        {
+            string toEmail1 = "bob@test.com";
+            string toEmail2 = "ratface@test.com";
+
+            var email = Email
+                .From(FromEmail)
+                .To(toEmail1)
+                .To(toEmail2);
+
+            Assert.AreEqual(2, email.Data.ToAddresses.Count);
+        }
+
+        [Test]
+        public void Can_Add_Multiple_Recipients_From_List()
+        {
+            var emails = new List<Address>
+            {
+                new("email1@email.com"),
+                new("email2@email.com")
+            };
+
+            var email = Email
+                .From(FromEmail)
+                .To(emails);
+
+            Assert.AreEqual(2, email.Data.ToAddresses.Count);
+        }
+
+        [Test]
+        public void Can_Add_Multiple_Recipients_From_String_List()
         {
             var emails = new List<string>
             {
@@ -88,180 +90,190 @@ namespace FluentEmail.Core.Tests
             };
 
             var email = Email
-                .From(fromEmail)
+                .From(FromEmail)
                 .To(emails);
 
             Assert.AreEqual(2, email.Data.ToAddresses.Count);
         }
 
         [Test]
-		public void Can_Add_Multiple_CCRecipients_From_List()
-		{
-			var emails = new List<Address>
+        public void Can_Add_Multiple_CCRecipients_From_List()
+        {
+            var emails = new List<Address>
             {
                 new("email1@email.com"),
                 new("email2@email.com")
             };
 
             var email = Email
-				.From(fromEmail)
-				.CC(emails);
+                .From(FromEmail)
+                .CC(emails);
 
-			Assert.AreEqual(2, email.Data.CcAddresses.Count);
-		}
+            Assert.AreEqual(2, email.Data.CcAddresses.Count);
+        }
 
-		[Test]
-		public void Can_Add_Multiple_BCCRecipients_From_List()
-		{
-			var emails = new List<Address>();
-			emails.Add(new Address("email1@email.com"));
-			emails.Add(new Address("email2@email.com"));
+        [Test]
+        public void Can_Add_Multiple_BCCRecipients_From_List()
+        {
+            var emails = new List<Address>
+            {
+                new("email1@email.com"),
+                new("email2@email.com")
+            };
 
-			var email = Email
-				.From(fromEmail)
-				.BCC(emails);
+            var email = Email
+                .From(FromEmail)
+                .BCC(emails);
 
-			Assert.AreEqual(2, email.Data.BccAddresses.Count);
-		}
+            Assert.AreEqual(2, email.Data.BccAddresses.Count);
+        }
 
-		[Test]
-		public void Is_Valid_With_Properties_Set()
-		{
-			var email = Email
-				.From(fromEmail)
-				.To(toEmail)
-				.Subject(subject)
-				.Body(body);
+        [Test]
+        public void Is_Valid_With_Properties_Set()
+        {
+            var email = Email
+                .From(FromEmail)
+                .To(ToEmail)
+                .Subject(Subject)
+                .Body(Body);
 
-			Assert.AreEqual(body, email.Data.Body);
-			Assert.AreEqual(subject, email.Data.Subject);
-			Assert.AreEqual(fromEmail, email.Data.FromAddress.EmailAddress);
-			Assert.AreEqual(toEmail, email.Data.ToAddresses[0].EmailAddress);
-		}
+            Assert.AreEqual(Body, email.Data.Body);
+            Assert.AreEqual(Subject, email.Data.Subject);
+            Assert.AreEqual(FromEmail, email.Data.FromAddress.EmailAddress);
+            Assert.AreEqual(ToEmail, email.Data.ToAddresses[0].EmailAddress);
+        }
 
-		[Test]
-		public void ReplyTo_Address_Is_Set()
-		{
-			var replyEmail = "reply@email.com";
+        [Test]
+        public void ReplyTo_Address_Is_Set()
+        {
+            var replyEmail = "reply@email.com";
 
-			var email = Email.From(fromEmail)
-				.ReplyTo(replyEmail);
+            var email = Email.From(FromEmail)
+                .ReplyTo(replyEmail);
 
-			Assert.AreEqual(replyEmail, email.Data.ReplyToAddresses.First().EmailAddress);
-		}
-		
-		#region Refactored tests using setup through constructors.
-		[Test]
-		public void New_To_Address_Is_Set()
-		{
-			var email = new Email(fromEmail)
-				.To(toEmail);
+            Assert.AreEqual(replyEmail, email.Data.ReplyToAddresses.First().EmailAddress);
+        }
 
-			Assert.AreEqual(toEmail, email.Data.ToAddresses[0].EmailAddress);
-		}
+        #region Refactored tests using setup through constructors.
 
-		[Test]
-		public void New_From_Address_Is_Set()
-		{
-			var email = new Email(fromEmail);
+        [Test]
+        public void New_To_Address_Is_Set()
+        {
+            var email = new Email(FromEmail)
+                .To(ToEmail);
 
-			Assert.AreEqual(fromEmail, email.Data.FromAddress.EmailAddress);
-		}
+            Assert.AreEqual(ToEmail, email.Data.ToAddresses[0].EmailAddress);
+        }
 
-		[Test]
-		public void New_Subject_Is_Set()
-		{
-			var email = new Email(fromEmail)
-				.Subject(subject);
+        [Test]
+        public void New_From_Address_Is_Set()
+        {
+            var email = new Email(FromEmail);
 
-			Assert.AreEqual(subject, email.Data.Subject);
-		}
+            Assert.AreEqual(FromEmail, email.Data.FromAddress.EmailAddress);
+        }
 
-		[Test]
-		public void New_Body_Is_Set()
-		{
-			var email = new Email(fromEmail)
-				.Body(body);
+        [Test]
+        public void New_Subject_Is_Set()
+        {
+            var email = new Email(FromEmail)
+                .Subject(Subject);
 
-			Assert.AreEqual(body, email.Data.Body);
-		}
+            Assert.AreEqual(Subject, email.Data.Subject);
+        }
 
-		[Test]
-		public void New_Can_Add_Multiple_Recipients()
-		{
-			string toEmail1 = "bob@test.com";
-			string toEmail2 = "ratface@test.com";
+        [Test]
+        public void New_Body_Is_Set()
+        {
+            var email = new Email(FromEmail)
+                .Body(Body);
 
-			var email = new Email(fromEmail)
-				.To(toEmail1)
-				.To(toEmail2);
+            Assert.AreEqual(Body, email.Data.Body);
+        }
 
-			Assert.AreEqual(2, email.Data.ToAddresses.Count);
-		}
+        [Test]
+        public void New_Can_Add_Multiple_Recipients()
+        {
+            string toEmail1 = "bob@test.com";
+            string toEmail2 = "ratface@test.com";
 
-		[Test]
-		public void New_Can_Add_Multiple_Recipients_From_List()
-		{
-			var emails = new List<Address>();
-			emails.Add(new Address("email1@email.com"));
-			emails.Add(new Address("email2@email.com"));
+            var email = new Email(FromEmail)
+                .To(toEmail1)
+                .To(toEmail2);
 
-			var email = new Email(fromEmail)
-				.To(emails);
+            Assert.AreEqual(2, email.Data.ToAddresses.Count);
+        }
 
-			Assert.AreEqual(2, email.Data.ToAddresses.Count);
-		}
+        [Test]
+        public void New_Can_Add_Multiple_Recipients_From_List()
+        {
+            var emails = new List<Address>
+            {
+                new("email1@email.com"),
+                new("email2@email.com")
+            };
 
-		[Test]
-		public void New_Can_Add_Multiple_CCRecipients_From_List()
-		{
-			var emails = new List<Address>();
-			emails.Add(new Address("email1@email.com"));
-			emails.Add(new Address("email2@email.com"));
+            var email = new Email(FromEmail)
+                .To(emails);
 
-			var email = new Email(fromEmail)
-				.CC(emails);
+            Assert.AreEqual(2, email.Data.ToAddresses.Count);
+        }
 
-			Assert.AreEqual(2, email.Data.CcAddresses.Count);
-		}
+        [Test]
+        public void New_Can_Add_Multiple_CCRecipients_From_List()
+        {
+            var emails = new List<Address>
+            {
+                new("email1@email.com"),
+                new("email2@email.com")
+            };
 
-		[Test]
-		public void New_Can_Add_Multiple_BCCRecipients_From_List()
-		{
-			var emails = new List<Address>();
-			emails.Add(new Address("email1@email.com"));
-			emails.Add(new Address("email2@email.com"));
+            var email = new Email(FromEmail)
+                .CC(emails);
 
-			var email = new Email(fromEmail)
-				.BCC(emails);
+            Assert.AreEqual(2, email.Data.CcAddresses.Count);
+        }
 
-			Assert.AreEqual(2, email.Data.BccAddresses.Count);
-		}
+        [Test]
+        public void New_Can_Add_Multiple_BCCRecipients_From_List()
+        {
+            var emails = new List<Address>
+            {
+                new("email1@email.com"),
+                new("email2@email.com")
+            };
 
-		[Test]
-		public void New_Is_Valid_With_Properties_Set()
-		{
-			var email = new Email(fromEmail)
-				.To(toEmail)
-				.Subject(subject)
-				.Body(body);
+            var email = new Email(FromEmail)
+                .BCC(emails);
 
-			Assert.AreEqual(body, email.Data.Body);
-			Assert.AreEqual(subject, email.Data.Subject);
-			Assert.AreEqual(fromEmail, email.Data.FromAddress.EmailAddress);
-			Assert.AreEqual(toEmail, email.Data.ToAddresses[0].EmailAddress);
-		}
+            Assert.AreEqual(2, email.Data.BccAddresses.Count);
+        }
 
-		[Test]
-		public void New_ReplyTo_Address_Is_Set()
-		{
-			var replyEmail = "reply@email.com";
+        [Test]
+        public void New_Is_Valid_With_Properties_Set()
+        {
+            var email = new Email(FromEmail)
+                .To(ToEmail)
+                .Subject(Subject)
+                .Body(Body);
 
-			var email = new Email(fromEmail)
-				.ReplyTo(replyEmail);
+            Assert.AreEqual(Body, email.Data.Body);
+            Assert.AreEqual(Subject, email.Data.Subject);
+            Assert.AreEqual(FromEmail, email.Data.FromAddress.EmailAddress);
+            Assert.AreEqual(ToEmail, email.Data.ToAddresses[0].EmailAddress);
+        }
 
-			Assert.AreEqual(replyEmail, email.Data.ReplyToAddresses.First().EmailAddress);
-		}
-		#endregion
-	}
+        [Test]
+        public void New_ReplyTo_Address_Is_Set()
+        {
+            var replyEmail = "reply@email.com";
+
+            var email = new Email(FromEmail)
+                .ReplyTo(replyEmail);
+
+            Assert.AreEqual(replyEmail, email.Data.ReplyToAddresses.First().EmailAddress);
+        }
+
+        #endregion
+    }
 }
